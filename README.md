@@ -41,41 +41,35 @@ limitations under the License.
 
 <!-- /.intro -->
 
+<section class="installation">
 
+## Installation
+
+```bash
+npm install @stdlib/stats-base-dminsorted
+```
+
+Alternatively,
+
+-   To load the package in a website via a `script` tag without installation and bundlers, use the [ES Module][es-module] available on the [`esm`][esm-url] branch (see [README][esm-readme]).
+-   If you are using Deno, visit the [`deno`][deno-url] branch (see [README][deno-readme] for usage intructions).
+-   For use in Observable, or in browser/node environments, use the [Universal Module Definition (UMD)][umd] build available on the [`umd`][umd-url] branch (see [README][umd-readme]).
+
+The [branches.md][branches-url] file summarizes the available branches and displays a diagram illustrating their relationships.
+
+To view installation and usage instructions specific to each branch build, be sure to explicitly navigate to the respective README files on each branch, as linked to above.
+
+</section>
 
 <section class="usage">
 
 ## Usage
 
-To use in Observable,
-
 ```javascript
-dminsorted = require( 'https://cdn.jsdelivr.net/gh/stdlib-js/stats-base-dminsorted@umd/browser.js' )
+var dminsorted = require( '@stdlib/stats-base-dminsorted' );
 ```
 
-To vendor stdlib functionality and avoid installing dependency trees for Node.js, you can use the UMD server build:
-
-```javascript
-var dminsorted = require( 'path/to/vendor/umd/stats-base-dminsorted/index.js' )
-```
-
-To include the bundle in a webpage,
-
-```html
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/stdlib-js/stats-base-dminsorted@umd/browser.js"></script>
-```
-
-If no recognized module system is present, access bundle contents via the global scope:
-
-```html
-<script type="text/javascript">
-(function () {
-    window.dminsorted;
-})();
-</script>
-```
-
-#### dminsorted( N, x, stride )
+#### dminsorted( N, x, strideX )
 
 Computes the minimum value of a sorted double-precision floating-point strided array `x`.
 
@@ -83,15 +77,13 @@ Computes the minimum value of a sorted double-precision floating-point strided a
 var Float64Array = require( '@stdlib/array-float64' );
 
 var x = new Float64Array( [ 1.0, 2.0, 3.0 ] );
-var N = x.length;
 
-var v = dminsorted( N, x, 1 );
+var v = dminsorted( x.length, x, 1 );
 // returns 1.0
 
 x = new Float64Array( [ 3.0, 2.0, 1.0 ] );
-N = x.length;
 
-v = dminsorted( N, x, 1 );
+v = dminsorted( x.length, x, 1 );
 // returns 1.0
 ```
 
@@ -99,18 +91,16 @@ The function has the following parameters:
 
 -   **N**: number of indexed elements.
 -   **x**: sorted input [`Float64Array`][@stdlib/array/float64].
--   **stride**: index increment for `x`.
+-   **strideX**: stride length for `x`.
 
-The `N` and `stride` parameters determine which elements in `x` are accessed at runtime. For example, to compute the minimum value of every other element in `x`,
+The `N` and stride parameters determine which elements in the strided array are accessed at runtime. For example, to compute the minimum value of every other element in `x`,
 
 ```javascript
 var Float64Array = require( '@stdlib/array-float64' );
-var floor = require( '@stdlib/math-base-special-floor' );
 
 var x = new Float64Array( [ 1.0, 2.0, 2.0, -7.0, 3.0, 3.0, 4.0, 2.0 ] );
-var N = floor( x.length / 2 );
 
-var v = dminsorted( N, x, 2 );
+var v = dminsorted( 4, x, 2 );
 // returns 1.0
 ```
 
@@ -120,18 +110,15 @@ Note that indexing is relative to the first index. To introduce an offset, use [
 
 ```javascript
 var Float64Array = require( '@stdlib/array-float64' );
-var floor = require( '@stdlib/math-base-special-floor' );
 
 var x0 = new Float64Array( [ 2.0, 1.0, 2.0, 2.0, -2.0, 2.0, 3.0, 4.0 ] );
 var x1 = new Float64Array( x0.buffer, x0.BYTES_PER_ELEMENT*1 ); // start at 2nd element
 
-var N = floor( x0.length / 2 );
-
-var v = dminsorted( N, x1, 2 );
+var v = dminsorted( 4, x1, 2 );
 // returns 1.0
 ```
 
-#### dminsorted.ndarray( N, x, stride, offset )
+#### dminsorted.ndarray( N, x, strideX, offsetX )
 
 Computes the minimum value of a sorted double-precision floating-point strided array using alternative indexing semantics.
 
@@ -139,26 +126,23 @@ Computes the minimum value of a sorted double-precision floating-point strided a
 var Float64Array = require( '@stdlib/array-float64' );
 
 var x = new Float64Array( [ 1.0, 2.0, 3.0 ] );
-var N = x.length;
 
-var v = dminsorted.ndarray( N, x, 1, 0 );
+var v = dminsorted.ndarray( x.length, x, 1, 0 );
 // returns 1.0
 ```
 
 The function has the following additional parameters:
 
--   **offset**: starting index for `x`.
+-   **offsetX**: starting index for `x`.
 
-While [`typed array`][mdn-typed-array] views mandate a view offset based on the underlying `buffer`, the `offset` parameter supports indexing semantics based on a starting index. For example, to calculate the minimum value for every other value in `x` starting from the second value
+While [`typed array`][mdn-typed-array] views mandate a view offset based on the underlying buffer, the offset parameter supports indexing semantics based on a starting index. For example, to calculate the minimum value for every other element in `x` starting from the second element
 
 ```javascript
 var Float64Array = require( '@stdlib/array-float64' );
-var floor = require( '@stdlib/math-base-special-floor' );
 
 var x = new Float64Array( [ 2.0, 1.0, 2.0, 2.0, -2.0, 2.0, 3.0, 4.0 ] );
-var N = floor( x.length / 2 );
 
-var v = dminsorted.ndarray( N, x, 2, 1 );
+var v = dminsorted.ndarray( 4, x, 2, 1 );
 // returns 1.0
 ```
 
@@ -183,36 +167,124 @@ var v = dminsorted.ndarray( N, x, 2, 1 );
 
 <!-- eslint no-undef: "error" -->
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<body>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/stdlib-js/array-float64@umd/browser.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/stdlib-js/stats-base-dminsorted@umd/browser.js"></script>
-<script type="text/javascript">
-(function () {
+```javascript
+var linspace = require( '@stdlib/array-linspace' );
+var dminsorted = require( '@stdlib/stats-base-dminsorted' );
 
-var x;
-var i;
-
-x = new Float64Array( 10 );
-for ( i = 0; i < x.length; i++ ) {
-    x[ i ] = i - 5.0;
-}
+var options = {
+    'dtype': 'float64'
+};
+var x = linspace( -5.0, 5.0, 10, options );
 console.log( x );
 
 var v = dminsorted( x.length, x, 1 );
 console.log( v );
-
-})();
-</script>
-</body>
-</html>
 ```
 
 </section>
 
 <!-- /.examples -->
+
+<!-- C usage documentation. -->
+
+<section class="usage">
+
+### Usage
+
+```c
+#include "stdlib/stats/base/dminsorted.h"
+```
+
+#### stdlib_strided_dminsorted( N, \*X, strideX )
+
+Computes the minimum value of a sorted double-precision floating-point strided array.
+
+```c
+const double x[] = { 1.0, 2.0, 3.0 };
+
+double v = stdlib_strided_dmax( 3, x, 1 );
+// returns 1.0
+```
+
+The function accepts the following arguments:
+
+-   **N**: `[in] CBLAS_INT` number of indexed elements.
+-   **X**: `[in] double*` input array.
+-   **strideX**: `[in] CBLAS_INT` stride length for `X`.
+
+```c
+double stdlib_strided_dminsorted( const CBLAS_INT N, const double *X, const CBLAS_INT strideX );
+```
+
+#### stdlib_strided_dminsorted_ndarray( N, \*X, strideX, offsetX )
+
+Computes the minimum value of a sorted double-precision floating-point strided array using alternative indexing semantics.
+
+```c
+const double x[] = { 1.0, 2.0, 3.0 };
+
+double v = stdlib_strided_dminsorted_ndarray( 3, x, 1, 0 );
+// returns 1.0
+```
+
+The function accepts the following arguments:
+
+-   **N**: `[in] CBLAS_INT` number of indexed elements.
+-   **X**: `[in] double*` input array.
+-   **strideX**: `[in] CBLAS_INT` stride length for `X`.
+-   **offsetX**: `[in] CBLAS_INT` starting index for `X`.
+
+```c
+double stdlib_strided_dminsorted_ndarray( const CBLAS_INT N, const double *X, const CBLAS_INT strideX, const CBLAS_INT offsetX );
+```
+
+</section>
+
+<!-- /.usage -->
+
+<!-- C API usage notes. Make sure to keep an empty line after the `section` element and another before the `/section` close. -->
+
+<section class="notes">
+
+</section>
+
+<!-- /.notes -->
+
+<!-- C API usage examples. -->
+
+<section class="examples">
+
+### Examples
+
+```c
+#include "stdlib/stats/base/dminsorted.h"
+#include <stdio.h>
+
+int main( void ) {
+    // Create a strided array:
+    const double x[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0 };
+
+    // Specify the number of elements:
+    const int N = 4;
+
+    // Specify the stride length:
+    const int strideX = 2;
+
+    // Compute the minimum value:
+    double v = stdlib_strided_dminsorted( N, x, strideX );
+
+    // Print the result:
+    printf( "min: %lf\n", v );
+}
+```
+
+</section>
+
+<!-- /.examples -->
+
+</section>
+
+<!-- /.c -->
 
 <!-- Section for related `stdlib` packages. Do not manually edit this section, as it is automatically populated. -->
 
@@ -257,7 +329,7 @@ See [LICENSE][stdlib-license].
 
 ## Copyright
 
-Copyright &copy; 2016-2024. The Stdlib [Authors][stdlib-authors].
+Copyright &copy; 2016-2025. The Stdlib [Authors][stdlib-authors].
 
 </section>
 
@@ -303,19 +375,19 @@ Copyright &copy; 2016-2024. The Stdlib [Authors][stdlib-authors].
 
 [stdlib-license]: https://raw.githubusercontent.com/stdlib-js/stats-base-dminsorted/main/LICENSE
 
-[@stdlib/array/float64]: https://github.com/stdlib-js/array-float64/tree/umd
+[@stdlib/array/float64]: https://github.com/stdlib-js/array-float64
 
 [mdn-typed-array]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray
 
 <!-- <related-links> -->
 
-[@stdlib/stats/base/dmin]: https://github.com/stdlib-js/stats-base-dmin/tree/umd
+[@stdlib/stats/base/dmin]: https://github.com/stdlib-js/stats-base-dmin
 
-[@stdlib/stats/base/dmaxsorted]: https://github.com/stdlib-js/stats-base-dmaxsorted/tree/umd
+[@stdlib/stats/base/dmaxsorted]: https://github.com/stdlib-js/stats-base-dmaxsorted
 
-[@stdlib/stats/base/minsorted]: https://github.com/stdlib-js/stats-base-minsorted/tree/umd
+[@stdlib/stats/base/minsorted]: https://github.com/stdlib-js/stats-base-minsorted
 
-[@stdlib/stats/base/sminsorted]: https://github.com/stdlib-js/stats-base-sminsorted/tree/umd
+[@stdlib/stats/base/sminsorted]: https://github.com/stdlib-js/stats-base-sminsorted
 
 <!-- </related-links> -->
 
