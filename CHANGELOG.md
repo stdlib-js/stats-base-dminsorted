@@ -4,7 +4,7 @@
 
 <section class="release" id="unreleased">
 
-## Unreleased (2025-01-14)
+## Unreleased (2025-02-02)
 
 <section class="features">
 
@@ -32,6 +32,7 @@
 
 <details>
 
+-   [`8e0153b`](https://github.com/stdlib-js/stdlib/commit/8e0153bb7bf74e172c9bbfd42b05164682e0d1c4) - **docs:** update docs of `stats/base/*` [(#5031)](https://github.com/stdlib-js/stdlib/pull/5031) _(by Aayush Khanna)_
 -   [`b00d9f1`](https://github.com/stdlib-js/stdlib/commit/b00d9f1064701187f48a05b9753e74ae835b0726) - **docs:** fix typing error in `repl.txt` of `stats/base/*` [(#4750)](https://github.com/stdlib-js/stdlib/pull/4750) _(by Aayush Khanna)_
 -   [`7e63aad`](https://github.com/stdlib-js/stdlib/commit/7e63aad8c0b42330b0933973bddea8d1c5e84862) - **fix:** wrap function calls in `API_SUFFIX` in native addons [(#4646)](https://github.com/stdlib-js/stdlib/pull/4646) _(by Aayush Khanna)_
 -   [`384a7fe`](https://github.com/stdlib-js/stdlib/commit/384a7fefadbeb4377e347a6e32ca81651546fa93) - **feat:** add C ndarray interface and refactor implementation for `stats/base/dminsorted` [(#4201)](https://github.com/stdlib-js/stdlib/pull/4201) _(by Aayush Khanna, Athan Reines, stdlib-bot)_
